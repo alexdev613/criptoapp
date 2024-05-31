@@ -5,7 +5,6 @@ function App() {
 
   return (
     <div>
-      <h1>CRIPTOAPP</h1>
       <RouterProvider router={router} />
     </div>
   )

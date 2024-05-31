@@ -1,0 +1,16 @@
+/*
+    Um arquivo tipo .module.css serve para "escopar", ou seja, ele tem acesso apenas dentro do escopo do componente
+  o importar! Por exemplo, este arquivo 'header.module.css' será inportado no header/index.tsx
+  e as classes que colocarmos aqui dentro só serão utilizadas e aplicadas neste componente.
+
+  Isso é muito util para a manutenção do nosso código! E para evitar conflito de classes.
+
+*/
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  max-width: 1080px;
+}
