@@ -31,14 +31,16 @@ export function Home() {
   const [input, setInput] = useState("");
   const [coins, setCoins] = useState<CoinProps[]>([]);
 
+  const [offset, setOffset] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [offset]);
 
   async function getData(){
-    fetch("https://api.coincap.io/v2/assets?limit=10&offset=0")
+    fetch(`https://api.coincap.io/v2/assets?limit=10&offset=${offset}`) // faz a requisição http da API
     .then(response => response.json())
     .then((data: DataProps) => {
       const coinsData = data.data;
@@ -65,8 +67,12 @@ export function Home() {
         return formatted;
       });
 
-      console.log(formattedResult); // o que tenho em coinsData que é o que vem da api, mais a(s) propriedades que acrescentei
-      setCoins(formattedResult); // agora depois de feita a requisição e recebida a resposta com os items recebidos da API passando mais propriedades personalizadas e eu preencho minha useState coins
+      // console.log(formattedResult); // o que tenho em coinsData que é o que vem da api, mais a(s) propriedades que acrescentei
+      // setCoins(formattedResult); // agora depois de feita a requisição e recebida a resposta com os items recebidos da API passando mais propriedades personalizadas e eu preencho minha useState coins
+
+      const listCoins = [...coins, ...formattedResult];
+      setCoins(listCoins);
+
     })
   }
 
@@ -80,7 +86,12 @@ export function Home() {
   }
 
   function handleGetMore() {
-    alert("TESTE");
+    if(offset === 0) {
+      setOffset(10);
+      return;
+    }
+
+    setOffset(offset + 10);
   }
 
   return (
