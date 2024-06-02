@@ -3,7 +3,7 @@ import styles from './home.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 
-interface CoinProps {
+export interface CoinProps {
   id: string;
   rank: string;
   symbol: string;
@@ -54,7 +54,7 @@ export function Home() {
         style: "currency",
         currency: "USD",
         notation: "compact",
-      })
+      });
 
       const formattedResult = coinsData.map((item) => {
         const formatted = {
