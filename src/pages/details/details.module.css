@@ -41,3 +41,15 @@
   color: #f91257;
   font-weight: bold;
 }
+
+.imgLoading {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+.imgLoading img {
+  max-width: 10px;
+  max-width: 600px;
+  min-width: 200px;
+}

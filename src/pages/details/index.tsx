@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CoinProps } from '../home';
 import styles from './details.module.css';
+import cryptos from '../../assets/cryptos.gif';
 
 interface ResponseData {
   data: CoinProps;
@@ -21,7 +22,15 @@ export function Details() {
 
   const [loading, setLoading] = useState(true);
 
+  const [minimumLoadingTime, setMinimumLoadingTime] = useState(false);
+
   useEffect(() => {
+
+    // Inicia temporizador
+    const timer = setTimeout(() => {
+      setMinimumLoadingTime(true);
+    }, 3000);
+
     async function getCoin() {
       try {
         fetch(`https://api.coincap.io/v2/assets/${cripto}`)
@@ -64,12 +73,19 @@ export function Details() {
     }
 
     getCoin();
-  }, [cripto]);
 
-  if(loading || !coin ) { // se loading === true ou não tiver nada em coin
+    // Limpa o temporizador quando o componente é desmontado!
+    return () => clearTimeout(timer);
+
+  }, [cripto, navigate]);
+
+  if(loading || !coin || !minimumLoadingTime ) { // se loading === true ou não tiver nada em coin ou minimumLoadindTime === false
     return(
       <div className={styles.container} >
         <h4 className={styles.center} >Carregando detalhes...</h4>
+        <section className={styles.imgLoading} >
+          <img src={cryptos} alt="Crypto Animation" />
+        </section>
       </div>
     )
   }
@@ -88,6 +104,8 @@ export function Details() {
         <h1>{coin?.name} | {coin?.symbol}</h1>
 
         <p><strong>Preço: </strong>{coin?.formattedPrice}</p>
+        
+        <p><strong>Preço fracionado: $</strong>{coin.priceUsd}</p>
 
         <a>
           <strong>Mercado: </strong>{coin?.formattedMarket}
