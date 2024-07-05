@@ -27,17 +27,31 @@ interface DataProps {
   data: CoinProps[];
 }
 
+interface ExchangeRateResponse {
+  USDBRL: {
+    bid: string
+  }
+}
+
 export function Home() {
   const [input, setInput] = useState("");
   const [coins, setCoins] = useState<CoinProps[]>([]);
 
   const [offset, setOffset] = useState(0);
 
+  const [exchangeRate, setExchangeRate] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     getData();
   }, [offset]);
+
+
+  useEffect(() => {
+    exchangeUsdBrl();
+  }, []);
+
 
   async function getData(){
     fetch(`https://api.coincap.io/v2/assets?limit=10&offset=${offset}`) // faz a requisição http da API
@@ -94,8 +108,32 @@ export function Home() {
     setOffset(offset + 10);
   }
 
+  async function exchangeUsdBrl() {
+    try {
+      const response = await fetch(`https://economia.awesomeapi.com.br/last/USD-BRL`);
+
+      const data: ExchangeRateResponse = await response.json();
+
+      const rate = parseFloat(data.USDBRL.bid);
+
+      setExchangeRate( rate.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) );
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <main className={styles.container}>
+      <div className={styles.exchange}>
+        <strong>
+          Cotação Dólar/Real: {exchangeRate ? (
+            <p>{exchangeRate}</p>
+          ) : (
+            <p>Não Disponível</p>
+          )}
+        </strong>
+      </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
