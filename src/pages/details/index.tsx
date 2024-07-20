@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { CoinProps } from '../home';
 import styles from './details.module.css';
 import cryptos from '../../assets/cryptos.gif';
@@ -138,7 +138,11 @@ export function Details() {
             {Number(coin?.changePercent24Hr).toFixed(2)}%
           </span>
         </a>
+        <Link to='/' className={styles.buttonBack}>
+          Voltar
+        </Link>
       </section>
+
     </div>
   )
 }
